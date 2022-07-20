@@ -121,10 +121,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = [
-"https://asc-api.herokuapp.com",
-"http://127.0.0.1:8000"
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
