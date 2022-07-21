@@ -23,5 +23,6 @@ class FeesView(generics.ListCreateAPIView):
     #             fees.save()
 
 
-
-            
+class FeesDetailView(generics.RetrieveAPIView):
+    queryset = Fees.objects.all()
+    serializer_class = FeesSerializer
