@@ -1,3 +1,4 @@
+from department.models import Department
 from .models import Student, StudentAddition
 from rest_framework import serializers
 
@@ -30,6 +31,8 @@ class StudentSerializer(serializers.ModelSerializer):
 class StudentCreateSerializer(serializers.ModelSerializer):
     more = StudentAdditionSerializer(read_only=True)
     index_number = serializers.CharField(write_only=True)
+    department = serializers.IntegerField(write_only=True)
+    
     class Meta:
         model = Student
         fields = [
@@ -38,6 +41,7 @@ class StudentCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'other_name',
             'index_number',
+            'department',
             'username',
             'dob',
             'email',
@@ -45,7 +49,14 @@ class StudentCreateSerializer(serializers.ModelSerializer):
             'phone_number',
             'address',
             'more'
-            ]
+        ]
+    
+    def validate_department(self, value):
+        qs = Department.objects.filter(id=value)
+        if not qs.exists():
+            raise serializers.ValidationError('Department does not exist')
+        
+        return value
 
 class StudentFeesSerializer(serializers.ModelSerializer):
     more = StudentAdditionSerializer(read_only=True)

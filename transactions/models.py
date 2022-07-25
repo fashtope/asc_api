@@ -10,7 +10,7 @@ class Transaction(models.Model):
         db_table = 'Transaction'
     transaction_number = models.CharField(max_length=250)
     student = models.ForeignKey(Student, on_delete=models.DO_NOTHING, related_name='student')
-    accountant = models.ForeignKey(Accountant, on_delete=models.DO_NOTHING, related_name='accountant')
-    created_date = models.DateTimeField(auto_now=True)
+    accountant = models.ForeignKey(Accountant, on_delete=models.DO_NOTHING, related_name='accountant', null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     bank_draft = models.OneToOneField(BankDraft, on_delete=models.DO_NOTHING)
     

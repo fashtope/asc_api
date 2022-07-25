@@ -1,12 +1,13 @@
-from django.shortcuts import render
-
 from rest_framework import generics, mixins
+from django_filters import rest_framework as filters
 
 from account.models import User
+from department.models import Department
 from fees.fees_func import student_total_fees
 
 from .models import Student, StudentAddition
 from .serializers import StudentCreateSerializer, StudentSerializer
+from .filters import StudentFilter
 
 
 class StudentDetailAPIView(generics.RetrieveAPIView):
@@ -18,7 +19,10 @@ class StudentDetailAPIView(generics.RetrieveAPIView):
 class StudentListCreateAPIView(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentCreateSerializer
-
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = StudentFilter
+    
+    
     def perform_create(self, serializer):
         if serializer.is_valid():
             first_name = serializer.validated_data.get('first_name')
@@ -30,6 +34,8 @@ class StudentListCreateAPIView(generics.ListCreateAPIView):
             phone_number = serializer.validated_data.get('phone_number')
             address = serializer.validated_data.get('address')
             index_number = serializer.validated_data.pop('index_number')
+            department = serializer.validated_data.pop('department')
+            department_obj = Department.objects.get(id=department)
 
             student = User.objects.create(
                 first_name=first_name,
@@ -45,7 +51,7 @@ class StudentListCreateAPIView(generics.ListCreateAPIView):
             )
 
             student_addition = StudentAddition(
-                user=student, index_number=index_number)
+                user=student, index_number=index_number,department=department_obj)
 
             student_addition.save()
 
@@ -67,6 +73,8 @@ class StudentUpdateAPIView(generics.RetrieveUpdateAPIView):
             phone_number = serializer.validated_data.get('phone_number')
             address = serializer.validated_data.get('address')
             index_number = serializer.validated_data.pop('index_number')
+            department = serializer.validated_data.pop('department')
+            department_obj = Department.objects.get(id=department)
             
             student = Student.objects.get(id=pk)
             student.first_name=first_name
@@ -79,10 +87,12 @@ class StudentUpdateAPIView(generics.RetrieveUpdateAPIView):
             student.address=address,
             student.username=index_number,
             
+            
             student.save()
 
             student_addition = StudentAddition.objects.get(user=student)
             student_addition.index_number=index_number
+            student_addition.department=department_obj
 
             student_addition.save()
 

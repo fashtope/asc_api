@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 from student.models import Student
@@ -16,3 +17,4 @@ class BankDraft(models.Model):
     draft_number = models.CharField(max_length=255)
     amount = models.IntegerField()
     student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
+    date = models.DateField(auto_now_add=True)

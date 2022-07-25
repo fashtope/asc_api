@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     'bank_draft',
     'transactions',
     'fees',
+    'department',
     
     'django_extensions',
     'phonenumber_field',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

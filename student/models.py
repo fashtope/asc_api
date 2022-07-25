@@ -1,7 +1,7 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 from account.models import User
+from department.models import Department
 # Create your models here.
 
 class StudentManager(models.Manager):
@@ -33,5 +33,6 @@ class Student(User):
 class StudentAddition(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     index_number = models.CharField(max_length=15, null=True, unique=True)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True, blank=True)
     
     
