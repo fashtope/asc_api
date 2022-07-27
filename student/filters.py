@@ -9,4 +9,4 @@ class StudentFilter(filters.FilterSet):
     
     class Meta:
         model=Student
-        fields = ['studentaddition__index_number', 'studentaddition__department__name', 'first_name', 'last_name', 'other_name']
+        fields = ['index_number', 'department', 'first_name', 'last_name', 'other_name']
