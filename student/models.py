@@ -26,7 +26,7 @@ class Student(User):
     
     @property
     def more(self):
-        return self.studentaddition    
+        return self.studentaddition
     
     
     

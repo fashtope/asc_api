@@ -1,5 +1,5 @@
-from rest_framework import generics, mixins
-from django_filters import rest_framework as filters
+from rest_framework import generics, mixins, filters
+from django_filters import rest_framework as django_filters
 
 from account.models import User
 from department.models import Department
@@ -19,7 +19,7 @@ class StudentDetailAPIView(generics.RetrieveAPIView):
 class StudentListCreateAPIView(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentCreateSerializer
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [django_filters.DjangoFilterBackend, filters.SearchFilter]
     filterset_class = StudentFilter
     
     

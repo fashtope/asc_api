@@ -1,26 +1,17 @@
 from rest_framework import generics
+from django_filters import rest_framework as filters
 
-from fees.models import Fees
-from fees.serializers import FeesSerializer
-from student.models import Student
+from .filters import FeesFilter
+from .models import Fees
+from .serializers import FeesSerializer
 
 
 
 class FeesView(generics.ListCreateAPIView):
     queryset = Fees.objects.all()
     serializer_class = FeesSerializer
-    
-    # def perform_create(self, serializer):
-    #     if serializer.is_valid():
-    #         student_id = serializer.validated_data.get('student_id')
-    #         amount = serializer.validated_data.get('amount')
-    #         reference = serializer.validated_data.get('reference')
-            
-    #         student = Student.objects.get(id=student_id)
-    #         if student is not None:
-    #             fees = Fees(student=student, amount=amount, reference=reference)
-                
-    #             fees.save()
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = FeesFilter
 
 
 class FeesDetailView(generics.RetrieveAPIView):
